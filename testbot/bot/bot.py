@@ -7,6 +7,8 @@ from pathlib import Path
 
 
 import hikari
+from hikari.events import reaction_events
+from hikari.events.guild_events import GuildAvailableEvent
 import lightbulb
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from pytz import utc
@@ -33,7 +35,7 @@ class Bot(lightbulb.Bot):
     def run(self) -> None:       
         self.event_manager.subscribe(hikari.StartingEvent, self.on_starting)
         self.event_manager.subscribe(hikari.StartedEvent, self.on_started)
-        self.event_manager.subscribe(hikari.StoppingEvent, self.on_stopping)
+        self.event_manager.subscribe(hikari.StoppingEvent, self.on_stopping)  
 
         super().run(
             activity=hikari.Activity(
