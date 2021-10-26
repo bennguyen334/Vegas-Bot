@@ -17,3 +17,4 @@ def load(bot: Bot) -> None:
 
 def unload(bot: Bot) -> None:
     bot.remove_plugin("Admin")
+    

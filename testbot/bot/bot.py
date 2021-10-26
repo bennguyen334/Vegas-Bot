@@ -4,7 +4,7 @@ import logging
 from pathlib import Path
 
 #from typing import AsyncContextManager, AsyncIterator
-
+import asyncio 
 
 import hikari
 from hikari.events import reaction_events
@@ -23,7 +23,6 @@ class Bot(lightbulb.Bot):
     
         with open("./secrets/token", mode="r", encoding="utf-8") as f:
             token = f.read().strip("\n")
-
         super().__init__(
             prefix = "-",
             insensitive_commands = True,
@@ -46,8 +45,8 @@ class Bot(lightbulb.Bot):
 
     async def on_starting(self, event: hikari.StartingEvent) -> None:
         for ext in self._extensions:
-            self.load_extension(f"testbot.bot.extensions.{ext}")
-            logging.info(f" {ext} extension loaded") 
+           self.load_extension(f"testbot.bot.extensions.{ext}")
+        logging.info(f" {ext} extension loaded") 
 
     async def on_started(self, event: hikari.StartedEvent) -> None:
         self.scheduler.start()
@@ -55,3 +54,4 @@ class Bot(lightbulb.Bot):
 
     async def on_stopping(self, event: hikari.StoppingEvent) -> None:
         self.scheduler.shutdown()
+
