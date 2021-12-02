@@ -92,24 +92,27 @@ async def waitForMessage(event: hikari.GuildMessageCreateEvent, user_id, timeout
             return None
     #print(msg.message)
     while msg.author_id != user_id:
-                    try:
-                        msg = await bot.wait_for(hikari.GuildMessageCreateEvent, timeout)
-                    except asyncio.TimeoutError:
-                        await event.message.respond(timeoutmsg)
-                        return None
+        try:
+            msg = await bot.wait_for(hikari.GuildMessageCreateEvent, timeout)
+            except asyncio.TimeoutError:
+                await event.message.respond(timeoutmsg)
+                return None
     return msg
 
 
 @bot.listen()
 async def slots(event: hikari.GuildMessageCreateEvent) -> None:
+    """ activates single-player slot machine game in current channel"""
     if event.is_bot or not event.content:
         return
     if event.content.lower() == "-play slots":
+        # Print welcome prompt
         embed = Embed(title="Welcome to the slot machine!", description="Press 🎰 to play!\nPress 📝 to see payouts")
-        emb = await event.message.respond(embed)
-        await emb.add_reaction('🎰')
+        emb = await event.message.respond(embed) # Print message to channel
+        await emb.add_reaction('🎰') # Add reactions to message
         await emb.add_reaction('📝')
 
+        # Await user input via clicking on reactions
         reaction = GuildReactionAddEvent
         reaction = await waitForReaction(reaction, event, emb.id, event.message.author.id, ['🎰', '📝'])
         if reaction == None:
