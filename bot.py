@@ -4,6 +4,7 @@ import hikari
 from hikari.embeds import Embed
 import slots, poker
 import utils, db
+import blackjack
 
 bot = hikari.GatewayBot(token="OTE0NzcxODQ4NjQ5MTQyMzAy.YaR5rA.lF54Ffw9VCWMKxoH32eGU1ACCjs")
 tils = utils.Utils(bot)
