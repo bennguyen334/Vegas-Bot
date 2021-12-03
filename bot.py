@@ -4,11 +4,41 @@ import hikari
 from hikari.embeds import Embed
 import slots, poker
 import utils, db
-import blackjack
+import blackjack as bj
+#import lightbulb
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-bot = hikari.GatewayBot(token="OTE0NzcxODQ4NjQ5MTQyMzAy.YaR5rA.lF54Ffw9VCWMKxoH32eGU1ACCjs")
+# class Bot(lightbulb.Bot):
+#     def __init__(self) -> None:
+#         self._extensions = [p.stem for p in Path("./testbot/bot/extensions/").glob("*.py")]
+#         self.scheduler = AsyncIOScheduler() 
+#         self.scheduler.configure(timezone=utc)
+    
+#         with open("./secrets/token", mode="r", encoding="utf-8") as f:
+#             token = f.read().strip("\n")
+#         super().__init__(
+#             prefix = "-",
+#             insensitive_commands = True,
+#             token=token,
+#             intents=hikari.Intents.ALL,
+#         )
+
+with open("./secrets/token", mode="r", encoding="utf-8") as f:
+    token = f.read().strip("\n")
+
+bot = hikari.GatewayBot(token=token)
 tils = utils.Utils(bot)
 DB = db.Db()
+
+@bot.listen()
+async def blackjack(event: hikari.GuildMessageCreateEvent) -> None:
+    if event.is_bot or not event.content:
+        return
+    if event.content.lower() == "-blackjack" or event.content.lower() == "-bj":
+
+        BJ = bj.Blackjack()
+        await BJ.game(event, tils, 0)
+
 
 @bot.listen()
 async def help(event: hikari.GuildMessageCreateEvent) -> None:
