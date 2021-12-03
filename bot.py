@@ -37,7 +37,7 @@ async def blackjack(event: hikari.GuildMessageCreateEvent) -> None:
     if event.content.lower() == "-blackjack" or event.content.lower() == "-bj":
 
         BJ = bj.Blackjack()
-        await BJ.game(event, tils, 0)
+        await BJ.game(event, tils)
 
 
 @bot.listen()

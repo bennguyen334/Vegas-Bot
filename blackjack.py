@@ -102,8 +102,7 @@ class Blackjack:
 #------------------------------------------------------------------
 #actual program: initiated with -bj or -blackjack
 #    @lightbulb.command(name="blackjack", aliases=("bj",))
-    async def game(self, event, ctx, bet):
-        userBet =  int(bet)
+    async def game(self, event: GuildMessageCreateEvent, ctx):
 
 #function to help with reactions (from slot.py)
         async def waitForReaction(reaction: GuildReactionAddEvent, event: hikari.GuildMessageCreateEvent, message_id, user_id, emojis, 
@@ -131,20 +130,7 @@ class Blackjack:
                     return None
             return amount
 
-        async def takeBet(csr: sqlite3.Cursor, data: list, emb: Message):
-            cursor.execute("SELECT balance FROM Users WHERE userID = ? AND balance > ?", (event.message.author.id, int(changeAmount.content)))
-            data = cursor.fetchall()
-            userBet = data[0]
-            await emb.delete()
-            if len(data) == 0:
-                embeded = Embed(title = f"Cannot change amount. Your current bet is {userBet}", 
-                                    description= "Press 🇧 to start.\nPress 🇶 to quit.\nPress 🇲 to change bet amount.", color = 0x2acaea)
-            else:
-                usserBet = changeAmount.content
-                embeded = Embed(title=f"Bet Amount Change to {userBet}", 
-                                    description = "Press 🇧 to start.\nPress 🇶 to quit.\nPress 🇲 to change bet amount.", color = 0x2acaea )
-            # emb = await event.message.respond(embeded)
-            # startEmote = ['🇧','🇶','🇲']
+
 
 #connect to database
         connection = sqlite3.connect('VegasBot.db')
@@ -157,11 +143,28 @@ class Blackjack:
         if len(data) == 0:
             cursor.execute("INSERT INTO Users (userID, balance) VALUES (?, ?)", (event.message.author.id, 10000))
             connection.commit()
-
-# #compare bet with current balance, exit if bet exceeds current balance
         cursor.execute("SELECT balance FROM Users WHERE userID = ?", (event.message.author.id,))
         data = cursor.fetchall()
         balance = data[0]
+
+
+        ## Take in bet here!
+        embed = Embed(title=f"Type in your initial bet",
+                    description=f"User Balance: {balance[0]}", color = 0x2acaea)
+        embed.set_author(name=event.message.author.username, icon = event.message.author.avatar_url)
+        emb = await event.message.respond(embed)
+        userBet = GuildMessageCreateEvent
+        userBet = await waitForChange(userBet, event, event.message.author.id,
+                                        timeoutmsg="Blackjack Timeout.\nPlayer did not insert initial amount in 30 seconds.", timeout=30)
+        if userBet is None:
+            await emb.delete()
+            return
+# #compare bet with current balance, exit if bet exceeds current balance
+        # cursor.execute("SELECT balance FROM Users WHERE userID = ?", (event.message.author.id,))
+        # data = cursor.fetchall()
+        # balance = data[0]
+
+        userBet = int(userBet.content)
         if (balance[0] < userBet):
             embeded = Embed(title=f"Bet Amount Exceeds User's Current Balance.\nExiting Game", 
                             description=f"User Balance: {balance[0]}\nCurrent Bet: {userBet}\n", color = 0x2acaea)
@@ -202,23 +205,22 @@ class Blackjack:
                     return
 
         #check database for amount
-                # cursor.execute("SELECT balance FROM Users WHERE userID = ? AND balance > ?", (event.message.author.id, int(changeAmount.content)))
-                # data = cursor.fetchall()
-                # userBet = data[0]
-                # await emb.delete()
-                # if len(data) == 0:
-                #     embeded = Embed(title = f"Cannot change amount. Your current bet is {userBet}", 
-                #                         description= "Press 🇧 to start.\nPress 🇶 to quit.\nPress 🇲 to change bet amount.", color = 0x2acaea)
-                # else:
-                #     userBet = changeAmount.content
-                #     embeded = Embed(title=f"Bet Amount Change to {userBet}", 
-                #                         description = "Press 🇧 to start.\nPress 🇶 to quit.\nPress 🇲 to change bet amount.", color = 0x2acaea )
-                # emb = await event.message.respond(embeded)
-                # startEmote = ['🇧','🇶','🇲']
-                # for emoji in startEmote:
-                #     await emb.add_reaction(emoji[0])
-                # pass
-                await takeBet(cursor, data, emb)
+                cursor.execute("SELECT balance FROM Users WHERE userID = ? AND balance > ?", (event.message.author.id, int(changeAmount.content)))
+                data = cursor.fetchall()
+                userBet = data[0]
+                await emb.delete()
+                if len(data) == 0:
+                    embeded = Embed(title = f"Cannot change amount. Your current bet is {userBet}", 
+                                        description= "Press 🇧 to start.\nPress 🇶 to quit.\nPress 🇲 to change bet amount.", color = 0x2acaea)
+                else:
+                    userBet = changeAmount.content
+                    embeded = Embed(title=f"Bet Amount Change to {userBet}", 
+                                        description = "Press 🇧 to start.\nPress 🇶 to quit.\nPress 🇲 to change bet amount.", color = 0x2acaea )
+                emb = await event.message.respond(embeded)
+                startEmote = ['🇧','🇶','🇲']
+                for emoji in startEmote:
+                    await emb.add_reaction(emoji[0])
+                continue
 
         #if reaction is Q for quit, prompt exit message
             if reaction.emoji_name == '🇶':
