@@ -104,6 +104,7 @@ class Blackjack:
 #    @lightbulb.command(name="blackjack", aliases=("bj",))
     async def game(self, event: GuildMessageCreateEvent, ctx):
 
+        DELAY = 3
 #function to help with reactions (from slot.py)
         async def waitForReaction(reaction: GuildReactionAddEvent, event: hikari.GuildMessageCreateEvent, message_id, user_id, emojis, 
                                     timeoutmsg = "Blackjack Timeout.\nPlayer did not make a choice in 30 seconds.", timeout = 30):
@@ -147,11 +148,11 @@ class Blackjack:
         data = cursor.fetchall()
         balance = data[0]
 
-
         ## Take in bet here!
         embed = Embed(title=f"Type in your initial bet",
                     description=f"User Balance: {balance[0]}", color = 0x2acaea)
         embed.set_author(name=event.message.author.username, icon = event.message.author.avatar_url)
+        time.sleep(DELAY)
         emb = await event.message.respond(embed)
         userBet = GuildMessageCreateEvent
         userBet = await waitForChange(userBet, event, event.message.author.id,
@@ -163,7 +164,7 @@ class Blackjack:
         # cursor.execute("SELECT balance FROM Users WHERE userID = ?", (event.message.author.id,))
         # data = cursor.fetchall()
         # balance = data[0]
-
+        time.sleep(DELAY)
         userBet = int(userBet.content)
         if (balance[0] < userBet):
             embeded = Embed(title=f"Bet Amount Exceeds User's Current Balance.\nExiting Game", 
@@ -176,6 +177,7 @@ class Blackjack:
         embeded = Embed(title=f"Welcome to Blackjack.\nCurrent Balance: {balance[0]}\nCurrent Bet: {userBet}", 
                             description="Press 🇧 to start.\nPress 🇶 to quit.\nPress 🇲 to change bet amount.", color = 0x2acaea)
         embeded.set_author(name=event.message.author.username, icon = event.author.avatar_url)
+        time.sleep(DELAY)
         emb = await event.message.respond(embeded)
         startEmote = ['🇧','🇶','🇲']
         for emoji in startEmote:
@@ -196,6 +198,7 @@ class Blackjack:
                 embeded = Embed(title= "Bet Change", 
                                     description=f"Type your new bet amount.\nYour current balance is: {balance[0]}\nYour current bet is: {userBet}", color = 0x2acaea)
                 embeded.set_author(name=event.message.author.username, icon = event.message.author.avatar_url)
+                time.sleep(DELAY)
                 emb = await event.message.respond(embeded)
 
                 changeAmount = GuildMessageCreateEvent
@@ -216,6 +219,7 @@ class Blackjack:
                     userBet = changeAmount.content
                     embeded = Embed(title=f"Bet Amount Change to {userBet}", 
                                         description = "Press 🇧 to start.\nPress 🇶 to quit.\nPress 🇲 to change bet amount.", color = 0x2acaea )
+                time.sleep(DELAY)
                 emb = await event.message.respond(embeded)
                 startEmote = ['🇧','🇶','🇲']
                 for emoji in startEmote:
@@ -225,7 +229,8 @@ class Blackjack:
         #if reaction is Q for quit, prompt exit message
             if reaction.emoji_name == '🇶':
                 embeded = Embed(title="Exiting Blackjack", description = "Goodbye!")
-                embeded.set_author(name=event.message.author.username, icon = ctx.author.avatar_url)
+                embeded.set_author(name=event.message.author.username, icon = event.message.author.avatar_url)
+                time.sleep(DELAY)
                 emb = await event.message.respond(embeded)
                 return
 
@@ -253,7 +258,8 @@ class Blackjack:
 #                print (userBet, balance[0])
                 embeded = Embed(title = "Blackjack", description = f"Player Cards:\n{Blackjack.show(player)}\nDealer Cards:"
                                 f"\n {Blackjack.show(dealer)}\nPlayer Sum: {playerSum}\nDealer Sum: {dealerSum}\nHit, Skip, or Quit", color = 0x2acaea)
-                embeded.set_author(name=event.message.author.username, icon = ctx.author.avatar_url)
+                embeded.set_author(name=event.message.author.username, icon = event.message.author.avatar_url)
+                time.sleep(DELAY)
                 emb = await event.message.respond(embeded)
 
                 optionEmote = ["🇭","🇸","🇶"]
@@ -281,6 +287,7 @@ class Blackjack:
 #if Q then break out of loop and end game with prompted message
                 elif reaction.emoji_name == '🇶':
                     embeded = Embed(title="Quitted Blackjack", description = "Goodbye!", color = 0x2acaea)
+                    time.sleep(DELAY)
                     emb = await event.message.respond(embeded)
                     return
 
@@ -291,8 +298,8 @@ class Blackjack:
 #resulted in bust
             if playerSum > 21:
                 result = Embed(title = "You Bust!", description = "You Lost!", color = 0x2acaea)
-                result.set_author(name=event.message.author.username, icon = ctx.author.avatar_url)
-                cursor.execute("UPDATE Users SET Balance = Balance - ? WHERE usernameID = ?", (userBet, event.message.author.id))
+                result.set_author(name=event.message.author.username, icon = event.message.author.avatar_url)
+                cursor.execute("UPDATE Users SET balance = balance - ? WHERE userID = ?", (userBet, event.message.author.id))
 #if player didn't bust, do dealer's turn and calculate hand
             else:    
                 while dealerSum < 17:
@@ -302,25 +309,25 @@ class Blackjack:
 #conditions for win and lost, print result
                 if dealerSum == 21:
                     result = Embed(title = "Dealer Blackjack", description = "You Lost!", color = 0x2acaea)
-                    cursor.execute("UPDATE Users SET Balance = Balance - ? WHERE usernameID = ?", (userBet, event.message.author.id))
+                    cursor.execute("UPDATE Users SET balance = balance - ? WHERE userID = ?", (userBet, event.message.author.id))
                 elif dealerSum > 21:
                     result = Embed(title = "Dealer Bust", description = "You Won!", color = 0x2acaea)
-                    cursor.execute("UPDATE Users SET Balance = Balance + ? WHERE usernameID = ?", (userBet, event.message.author.id))
+                    cursor.execute("UPDATE Users SET balance = balance + ? WHERE userID = ?", (userBet, event.message.author.id))
                 elif dealerSum == playerSum:
                     result = Embed(title = "Tie Between Dealer and Player", description = "No Winner", color = 0x2acaea)
                 elif dealerSum > playerSum:
                     result = Embed(title = "Dealer Values More Than Player", description = "You Lost!", color = 0x2acaea)
-                    cursor.execute("UPDATE Users SET Balance = Balance - ? WHERE usernameID = ?", (userBet, event.message.author.id))
+                    cursor.execute("UPDATE Users SET balance = balance - ? WHERE userID = ?", (userBet, event.message.author.id))
                 elif dealerSum < playerSum:
                     result = Embed(title = "Player Values More Than Dealer", description = "You Won!", color = 0x2acaea)
-                    cursor.execute("UPDATE Users SET Balance = Balance + ? WHERE usernameID = ?", (userBet, event.message.author.id))
-                result.set_author(name=event.message.author.username, icon = ctx.author.avatar_url)
+                    cursor.execute("UPDATE Users SET balance = balance + ? WHERE userID = ?", (userBet, event.message.author.id))
+                result.set_author(name=event.message.author.username, icon = event.message.author.avatar_url)
 
-
+            time.sleep(DELAY)
             results = await event.message.respond(result)
             connection.commit()
 #update balance and current user's bet
-            cursor.execute("SELECT Balance FROM Users WHERE usernameID = ?", (event.message.author.id,))
+            cursor.execute("SELECT balance FROM Users WHERE userID = ?", (event.message.author.id,))
             data = cursor.fetchall()
             balance = data[0]
 
@@ -329,7 +336,8 @@ class Blackjack:
                                         description = f"Player Cards:\n{Blackjack.show(player)}\nDealer Cards:\n {Blackjack.show(dealer)}\n"
                                                         f"Player Sum: {playerSum}\nDealer Sum: {dealerSum}\nPress 🇵 to play again.\n"
                                                             f"Press 🇶 to quit.\nPress 🇲 to change bet.", color = 0x2acaea)
-            embeded.set_author(name=event.message.author.username, icon = ctx.author.avatar_url)
+            embeded.set_author(name=event.message.author.username, icon = event.message.author.avatar_url)
+            time.sleep(DELAY)
             emb = await event.message.respond(embeded)
             endEmote = ['🇵','🇶', '🇲']
             for emoji in endEmote:
@@ -355,18 +363,19 @@ class Blackjack:
 
                 if reaction.emoji_name == '🇶':
                     embeded = Embed(title ="Exiting Blackjack", description = f"Current Balance: {balance[0]}", color = 0x2acaea)
-                    embeded.set_author(name=event.message.author.username, icon = ctx.author.avatar_url)
+                    embeded.set_author(name=event.message.author.username, icon = event.message.author.avatar_url)
                     emb = await event.message.respond(embeded)   
                     break
 
                 if reaction.emoji_name == '🇲':
                     flagPass = 1
-                    cursor.execute("SELECT Balance FROM Users WHERE usernameID = ?", (event.message.author.id,))
+                    cursor.execute("SELECT balance FROM Users WHERE userID = ?", (event.message.author.id,))
                     data = cursor.fetchall()
                     balance = data[0]
                     embeded = Embed(title= "Bet Change", description=f"Type your new bet amount.\nYour current balance is: {balance[0]}\n"
                                             f"Your current bet is: {userBet}", color = 0x2acaea)
-                    embeded.set_author(name=event.message.author.username, icon = ctx.author.avatar_url)
+                    embeded.set_author(name=event.message.author.username, icon = event.message.author.avatar_url)
+                    time.sleep(DELAY)
                     emb = await event.message.respond(embeded)
 
                     changeAmount = GuildMessageCreateEvent
@@ -375,7 +384,7 @@ class Blackjack:
                         await emb.delete()
                         return
 
-                    cursor.execute("SELECT Balance FROM Users WHERE usernameID = ? AND Balance > ?", (event.message.author.id, int(changeAmount.content)))
+                    cursor.execute("SELECT balance FROM users WHERE userID = ? AND balance > ?", (event.message.author.id, int(changeAmount.content)))
                     data = cursor.fetchall()
                     userBet = data[0]
                     await emb.delete()
@@ -386,6 +395,7 @@ class Blackjack:
                         userBet = changeAmount.content
                         embeded = Embed(title=f"Bet Amount Change to {userBet}", 
                                             description = "Press 🇧 to start.\nPress 🇶 to quit.\nPress 🇲 to change bet amount.", color = 0x2acaea )
+                    time.sleep(DELAY)
                     emb = await event.message.respond(embeded)
                     startEmote = ['🇧','🇶','🇲']
                     for emoji in startEmote:
