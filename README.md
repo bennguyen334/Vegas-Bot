@@ -4,9 +4,9 @@ Github Link:
 *ADD*
 -----
 Project Members:
-Arturo Girona
-Benjamin Nguyen
-Bryan Dean
+Arturo Girona,
+Benjamin Nguyen,
+Bryan Dean,
 Hala Benssimmou
 -----
 Presentation Link:
