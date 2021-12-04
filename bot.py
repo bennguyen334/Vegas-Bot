@@ -5,23 +5,7 @@ from hikari.embeds import Embed
 import slots, poker
 import utils, db
 import blackjack as bj
-#import lightbulb
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-
-# class Bot(lightbulb.Bot):
-#     def __init__(self) -> None:
-#         self._extensions = [p.stem for p in Path("./testbot/bot/extensions/").glob("*.py")]
-#         self.scheduler = AsyncIOScheduler() 
-#         self.scheduler.configure(timezone=utc)
-    
-#         with open("./secrets/token", mode="r", encoding="utf-8") as f:
-#             token = f.read().strip("\n")
-#         super().__init__(
-#             prefix = "-",
-#             insensitive_commands = True,
-#             token=token,
-#             intents=hikari.Intents.ALL,
-#         )
 
 with open("./secrets/token", mode="r", encoding="utf-8") as f:
     token = f.read().strip("\n")
@@ -34,7 +18,7 @@ DB = db.Db()
 async def blackjack(event: hikari.GuildMessageCreateEvent) -> None:
     if event.is_bot or not event.content:
         return
-    if event.content.lower() == "-blackjack" or event.content.lower() == "-bj":
+    if event.content.lower() == "-play blackjack":
 
         BJ = bj.Blackjack()
         await BJ.game(event, tils)
@@ -51,6 +35,7 @@ async def help(event: hikari.GuildMessageCreateEvent) -> None:
         embed.add_field(name="-collect daily", value="Allows you to collect a random amount of points each day")
         embed.add_field(name="-play slots", value="Play the slot machine and win points!")
         embed.add_field(name="-play poker", value="Play poker with your friends!")
+        embed.add_field(name="-play blackjack", value="Play the blackjack game!")
         await(event.message.respond(embed))
 
 @bot.listen()

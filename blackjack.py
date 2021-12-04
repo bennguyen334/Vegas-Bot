@@ -7,8 +7,6 @@ from hikari.events.message_events import GuildMessageCreateEvent, MessageCreateE
 from hikari.events.reaction_events import GuildReactionAddEvent 
 from hikari.interactions.base_interactions import MESSAGE_RESPONSE_TYPES
 from hikari.messages import Message
-#import lightbulb
-#from bot import Bot
 import pydealer as pd
 from typing import *
 import asyncio
@@ -101,7 +99,6 @@ class Blackjack:
         return holder
 #------------------------------------------------------------------
 #actual program: initiated with -bj or -blackjack
-#    @lightbulb.command(name="blackjack", aliases=("bj",))
     async def game(self, event: GuildMessageCreateEvent, ctx):
 
         DELAY = 1
@@ -137,7 +134,6 @@ class Blackjack:
         connection = sqlite3.connect('VegasBot.db')
         cursor = connection.cursor()
 #find if the author is in the database
-        #cursor.execute("SELECT usernameID FROM Users WHERE usernameID = ?", (event.message.author.id,))
         cursor.execute("SELECT userID From Users WHERE userID = ?", (event.message.author.id,))
         data = cursor.fetchall()
 #if not in database, add to database with a set amount of money given
@@ -152,7 +148,6 @@ class Blackjack:
         embed = Embed(title=f"Type in your initial bet",
                     description=f"User Balance: {balance[0]}", color = 0x2acaea)
         embed.set_author(name=event.message.author.username, icon = event.message.author.avatar_url)
- #       time.sleep(DELAY)
         emb = await event.message.respond(embed)
         userBet = GuildMessageCreateEvent
         userBet = await waitForChange(userBet, event, event.message.author.id,
@@ -161,9 +156,6 @@ class Blackjack:
             await emb.delete()
             return
 # #compare bet with current balance, exit if bet exceeds current balance
-        # cursor.execute("SELECT balance FROM Users WHERE userID = ?", (event.message.author.id,))
-        # data = cursor.fetchall()
-        # balance = data[0]
         time.sleep(DELAY)
         userBet = int(userBet.content)
         if (balance[0] < userBet):
@@ -255,7 +247,6 @@ class Blackjack:
 
 #loop continues until break. Prompt user each person's card and their sum then prompt three options
             while(int(userBet) < int(balance[0])):
-#                print (userBet, balance[0])
                 embeded = Embed(title = "Blackjack", description = f"Player Cards:\n{Blackjack.show(player)}\nDealer Cards:"
                                 f"\n {Blackjack.show(dealer)}\nPlayer Sum: {playerSum}\nDealer Sum: {dealerSum}\nHit, Skip, or Quit", color = 0x2acaea)
                 embeded.set_author(name=event.message.author.username, icon = event.message.author.avatar_url)
@@ -404,9 +395,3 @@ class Blackjack:
                 reaction = await waitForReaction(reaction, event, emb.id, event.message.author.id, ['🇧', '🇶', '🇲' ], "Blackjack Timeout. Goodbye!", 30)
 
         connection.close()
-
-# def load(bot: lightbulb.Bot) -> None:
-#     bot.add_plugin(Blackjack())
-
-# def unload(bot: lightbulb.Bot) -> None:
-#     bot.remove_plugin("Blackjack")
