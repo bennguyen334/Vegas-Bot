@@ -104,7 +104,7 @@ class Blackjack:
 #    @lightbulb.command(name="blackjack", aliases=("bj",))
     async def game(self, event: GuildMessageCreateEvent, ctx):
 
-        DELAY = 3
+        DELAY = 1
 #function to help with reactions (from slot.py)
         async def waitForReaction(reaction: GuildReactionAddEvent, event: hikari.GuildMessageCreateEvent, message_id, user_id, emojis, 
                                     timeoutmsg = "Blackjack Timeout.\nPlayer did not make a choice in 30 seconds.", timeout = 30):
@@ -152,7 +152,7 @@ class Blackjack:
         embed = Embed(title=f"Type in your initial bet",
                     description=f"User Balance: {balance[0]}", color = 0x2acaea)
         embed.set_author(name=event.message.author.username, icon = event.message.author.avatar_url)
-        time.sleep(DELAY)
+ #       time.sleep(DELAY)
         emb = await event.message.respond(embed)
         userBet = GuildMessageCreateEvent
         userBet = await waitForChange(userBet, event, event.message.author.id,
