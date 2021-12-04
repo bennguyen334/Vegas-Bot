@@ -1,7 +1,7 @@
 # Vegas-Bot
 
 Github Link:\
-*ADD*
+https://github.com/bennguyen334/Vegas-Bot
 -----
 Project Members:\
 Arturo Girona\
