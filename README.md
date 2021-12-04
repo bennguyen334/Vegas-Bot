@@ -56,6 +56,6 @@ Descriptions of any extra features implemented (beyond the project proposal):
 -----
 Include a description of the separation of work:\
 Arturo Girona:\
-Benjamin Nguyen: Main programmer of blackjack.py. Created the code and graphic user inferface for the game.\
+Benjamin Nguyen: Main programmer of blackjack.py. Created the code and graphic user inferface for the game. Covered the project, some commands, and blackjack in video. Editor of video.\
 Bryan Dean:\
 Hala Benssimmou:
