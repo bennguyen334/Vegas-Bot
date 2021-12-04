@@ -10,7 +10,7 @@ Bryan Dean\
 Hala Benssimmou
 -----
 Video Link:\
-~INSERT VIDEO HERE
+https://youtu.be/s8dz_M-tPag
 -----
 Project Description:\
 For the group project, we created a Discord bot called VegasBot that simulates a casino experience through the eponymous chat client. To create the bot, we focused on the hikari library due to Discord.py being discontinued.\
