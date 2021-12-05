@@ -24,7 +24,7 @@ Since the last status report, we encountered an issue involving the combination 
 -----
 Any details regarding instructions for the user interface that is beyond the obvious:\
 First, invite VegasBot to a Discord server. The invitation link is below.\
-https://discord.com/api/oauth2/authorize?client_id=914771848649142302&permissions=544857390199&scope=bot
+https://discord.com/api/oauth2/authorize?client_id=914771848649142302&permissions=544857390199&scope=bot \
 Before launching bot.py, first launch setup_db.py for the database.\
 Once bot.py launched, the user can access the help command (-help) for all the commands available to them.\
 Once a game (slots, poker, blackjack) launches, it should prompt users on what to do.
