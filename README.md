@@ -45,21 +45,20 @@ Hikari Library API: https://www.hikari-py.dev/hikari/ \
 Pydealer: https://pydealer.readthedocs.io/en/latest/ \
 Treys: https://github.com/ihendley/treys \
 Emojis: https://pypi.org/project/emoji/ \
-APScheduler: https://apscheduler.readthedocs.io/en/3.x/ 
-
+APScheduler: https://apscheduler.readthedocs.io/en/3.x/ \
 We refer to other links to get started on Hikari:\
-https://neonjonn.github.io/hikari-get-started/lightbulb \
-https://patchwork.systems/programming/hikari-discord-bot/index.html \
-https://youtu.be/5Jz_feIOKjA 
+Lightbulb Github: https://neonjonn.github.io/hikari-get-started/lightbulb \
+Hikari.py Guide: https://patchwork.systems/programming/hikari-discord-bot/index.html \
+Hikari Tutorial: https://youtu.be/5Jz_feIOKjA 
 -----
-Descriptions of any extra features implemented (beyond the project proposal): 
-Added a dailytime field in the database for the "-collect daily" command. Field that prevents users from running the command more than once in the 24 hour period.
+Descriptions of any extra features implemented (beyond the project proposal): \
+Added a lastcollected/datetime field in the database for the "-collect daily" command. Field that prevents users from running the command more than once in the 24 hour period.
 -----
 Include a description of the separation of work:\
-Arturo Girona: Help fix issues on Slots and Poker. Implemented the Blackjack game from Ben's testing bot to work with Bryan's bot. Team leader that make sure everyone communicated and set up meetings as a progress check. In charge of status reports and deadlines.\
+Arturo Girona: Help fix issues on Slots and Poker. Implemented the Blackjack game from Ben's testing bot to work with Bryan's bot. Team leader that make sure everyone communicated and set up meetings as a progress check. In charge of status reports and deadlines.
 
-Benjamin Nguyen: Main programmer of the Blackjack game. Covered the project, some commands, and blackjack in presentation video. Editor of video. Writer of README. Overseer of Github repository and project. \
+Benjamin Nguyen: Main programmer of the Blackjack game. Covered the project, some commands, and blackjack in presentation video. Editor of video. Writer of README. Overseer of Github repository and project. 
 
-Bryan Dean: Main programmer of Slots and Poker game. Help design and implement database. Provide the basic bot for submission. Implemented commands other than the games. Artist of VegasBot's profile picture. Helped Arturo with Blackjack game implementation. Covered Slots and Poker game in presentation video.\
+Bryan Dean: Main programmer of Slots and Poker game. Help design and implement database. Provide the basic bot for submission. Implemented commands other than the games. Artist of VegasBot's profile picture. Helped Arturo with Blackjack game implementation. Covered Slots and Poker game in presentation video.
 
 Hala Benssimmou: Help design and implement the database. Revise, fix code, and implemented database in Blackjack. Thorough testing on all games. Help and revise code for commands other than the games.
