@@ -14,7 +14,7 @@ https://youtu.be/s8dz_M-tPag
 -----
 Project Description:\
 For the group project, we created a Discord bot called VegasBot that simulates a casino experience through the eponymous chat client. To create the bot, we focused on the hikari library due to Discord.py being discontinued.\
-VegasBot has three games: slots, poker, and blackjack. These games allow users to bet virtual currency for a chance to gain or lose the amount. As planned, slots is a singleplayer game and poker is multiplayer compatible. Due to time constraints and complexity of existing code, blackjack will remain a singleplayer game.
+VegasBot has three games: slots, poker, and blackjack. These games allow users to bet virtual currency for a chance to gain or lose the amount. As planned, slots is a singleplayer game and poker is multiplayer compatible. Due to time constraints and complexity of existing code, blackjack will remain a singleplayer game. Likewise, the shop inventory idea was difficult in terms of time management and relies mostly on the server owner (i.e. redeem prizes), so we did not implement it.
 In addition, there is a command to receive a set amount of currency at a daily rate and another to check current user's balance.\
 There is a help command to show all the available commands VegasBot has to offer.\
 VegasBot has a database implementation through sqlite3 using setup_db.py. The database consists of three fields: userID, balance, lastcollected. The userID stores each user, the balance stores the amount of currency the user has, and lastcollected is a datetime record for daily command.
