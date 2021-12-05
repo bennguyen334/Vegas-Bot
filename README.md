@@ -55,7 +55,7 @@ https://youtu.be/5Jz_feIOKjA
 Descriptions of any extra features implemented (beyond the project proposal): 
 Added a dailytime field in the database for the "-collect daily" command. Field that prevents users from running the command more than once in the 24 hour period.
 -----
-Include a description of the separation of work:\
+#Include a description of the separation of work:\
 Arturo Girona: Help fix issues on Slots and Poker. Implemented the Blackjack game from Ben's testing bot to work with Bryan's bot. Team leader that make sure everyone communicated and set up meetings as a progress check. In charge of status reports and deadlines.\
 
 Benjamin Nguyen: Main programmer of the Blackjack game. Covered the project, some commands, and blackjack in presentation video. Editor of video. Writer of README. Overseer of Github repository and project. \
